@@ -97,8 +97,15 @@ public class OCMCommandHandler implements CommandExecutor {
                                 "&4ERROR: &rmode-messages.invalid-player string missing"));
                 return;
             }
-        } else if (sender.hasPermission("oldcombatmechanics.mode.others"))
-            player = Bukkit.getPlayer(args[2]);
+        } else if (sender.hasPermission("oldcombatmechanics.mode.others")) {
+            UUID uuid;
+            try {
+                uuid = UUID.fromString(args[2]);
+                player = (Player) Bukkit.getEntity(uuid);
+            } catch (IllegalArgumentException e) {
+                player = Bukkit.getPlayer(args[2]);
+            }
+        }
 
         if (player == null) {
             Messenger.send(sender,

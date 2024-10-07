@@ -233,6 +233,14 @@ old-player-knockback:
   # Increase to make sprint resetting (w-tapping) more important, decrease to make it less important
   # Increase to make clicking less important, decrease to make clicking more important
   knockback-extra-vertical: 0.1
+  # How much should we divide the player's current motion by? Higher values mean their current motion matters less
+  knockback-friction: 2.0
+  # At what distance between attacker and victim should we start modifying knockback
+  start-range: 0
+  # How much should we multiply the knockback by when the distance is greater than start-range
+  range-factor: 0
+  # What is the maximum range reduction we should apply
+  maximum-range-reduction: 0.4
   # Should knockback resistance be enabled? (e.g. netherite armour knockback resistance)
   enable-knockback-resistance: false
 
@@ -264,6 +272,12 @@ projectile-knockback:
     snowball: 0.0001
     egg: 0.0001
     ender_pearl: 0.0001
+
+projectile-relative-velocity-transfer:
+  enabled: true
+
+projectile-old-spawn-location:
+  enabled: true
 
 # ########################
 # GAPPLES & POTIONS

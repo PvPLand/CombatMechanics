@@ -42,6 +42,11 @@ public class ModulePlayerKnockback extends OCMModule {
     private double knockbackVerticalLimit;
     private double knockbackExtraHorizontal;
     private double knockbackExtraVertical;
+    private double knockbackFrictionVertical;
+    private double knockbackFrictionHorizontal;
+    private double startRange;
+    private double rangeFactor;
+    private double maximumRangeReduction;
     private boolean netheriteKnockbackResistance;
 
     private final Map<UUID, Vector> playerKnockbackHashMap = new WeakHashMap<>();
@@ -59,6 +64,11 @@ public class ModulePlayerKnockback extends OCMModule {
         knockbackExtraHorizontal = module().getDouble("knockback-extra-horizontal", 0.5);
         knockbackExtraVertical = module().getDouble("knockback-extra-vertical", 0.1);
         netheriteKnockbackResistance = module().getBoolean("enable-knockback-resistance", false) && Reflector.versionIsNewerOrEqualTo(1, 16, 0);
+        knockbackFrictionVertical = Math.max(module().getDouble("knockback-friction-vertical", 2.0), 0.1);
+        knockbackFrictionHorizontal = Math.max(module().getDouble("knockback-friction-horizontal", 2.0), 0.1);
+        startRange = module().getDouble("start-range", -1);
+        rangeFactor = module().getDouble("range-factor", 1.0);
+        maximumRangeReduction = module().getDouble("maximum-range-reduction", 0.4);
     }
 
     @EventHandler
@@ -131,9 +141,9 @@ public class ModulePlayerKnockback extends OCMModule {
         final Vector playerVelocity = victim.getVelocity();
 
         // Apply friction, then add base knockback
-        playerVelocity.setX((playerVelocity.getX() / 2) - (d0 / magnitude * knockbackHorizontal));
-        playerVelocity.setY((playerVelocity.getY() / 2) + knockbackVertical);
-        playerVelocity.setZ((playerVelocity.getZ() / 2) - (d1 / magnitude * knockbackHorizontal));
+        playerVelocity.setX((playerVelocity.getX() / knockbackFrictionHorizontal) - (d0 / magnitude * knockbackHorizontal));
+        playerVelocity.setY((playerVelocity.getY() / knockbackFrictionVertical) + knockbackVertical);
+        playerVelocity.setZ((playerVelocity.getZ() / knockbackFrictionHorizontal) - (d1 / magnitude * knockbackHorizontal));
 
         // Calculate bonus knockback for sprinting or knockback enchantment levels
         final EntityEquipment equipment = attacker.getEquipment();
@@ -147,10 +157,15 @@ public class ModulePlayerKnockback extends OCMModule {
             if (playerVelocity.getY() > knockbackVerticalLimit) playerVelocity.setY(knockbackVerticalLimit);
 
             if (bonusKnockback > 0) { // Apply bonus knockback
+                double extraHorizontal = knockbackExtraHorizontal;
+                double rangeReduction = getRangeReduction(attackerLocation, victimLocation);
+
+                extraHorizontal -= rangeReduction;
+
                 playerVelocity.add(new Vector((-Math.sin(attacker.getLocation().getYaw() * 3.1415927F / 180.0F) *
-                        (float) bonusKnockback * knockbackExtraHorizontal), knockbackExtraVertical,
+                        (float) bonusKnockback * extraHorizontal), knockbackExtraVertical,
                         Math.cos(attacker.getLocation().getYaw() * 3.1415927F / 180.0F) *
-                                (float) bonusKnockback * knockbackExtraHorizontal));
+                                (float) bonusKnockback * extraHorizontal));
             }
         }
 
@@ -167,5 +182,18 @@ public class ModulePlayerKnockback extends OCMModule {
 
         // Sometimes PlayerVelocityEvent doesn't fire, remove data to not affect later events if that happens
         Bukkit.getScheduler().runTaskLater(plugin, () -> playerKnockbackHashMap.remove(victimId), 1);
+    }
+
+    private double getRangeReduction(Location attackerLocation, Location victimLocation) {
+        double distanceX = attackerLocation.getX() - victimLocation.getX();
+        double distanceZ = attackerLocation.getZ() - victimLocation.getZ();
+
+        double range = Math.hypot(distanceX, distanceZ);
+        double rangeReduction = Math.max((range - startRange) * rangeFactor, 0);
+
+        if (rangeReduction > maximumRangeReduction) {
+            rangeReduction = maximumRangeReduction;
+        }
+        return rangeReduction;
     }
 }

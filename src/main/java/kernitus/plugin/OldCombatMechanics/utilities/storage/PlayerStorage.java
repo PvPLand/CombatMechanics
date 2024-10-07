@@ -74,13 +74,6 @@ public class PlayerStorage {
     }
 
     public static void scheduleSave() {
-        // Schedule a task for later, if there isn't one already scheduled
-        saveTask.compareAndSet(null,
-                Bukkit.getScheduler().runTaskLaterAsynchronously(plugin, () -> {
-                    instantSave();
-                    saveTask.set(null);
-                }, 2400L) // Save after 2 minutes
-        );
     }
 
     public static void instantSave() {

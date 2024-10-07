@@ -176,8 +176,6 @@ public class OCMMain extends JavaPlugin {
             });
         });
 
-        PlayerStorage.instantSave();
-
         // Logging to console the disabling of OCM
         logger.info(pdfFile.getName() + " v" + pdfFile.getVersion() + " has been disabled");
     }
@@ -238,6 +236,9 @@ public class OCMMain extends JavaPlugin {
         ModuleLoader.addModule(new ModuleOldBurnDelay(this));
         ModuleLoader.addModule(new ModuleAttackFrequency(this));
         ModuleLoader.addModule(new ModuleFishingRodVelocity(this));
+
+        ModuleLoader.addModule(new ModuleProjectileRelativeVelocity(this));
+        ModuleLoader.addModule(new ModuleProjectileSpawnLocation(this));
 
         // These modules require ProtocolLib
         if (protocolManager != null) {
