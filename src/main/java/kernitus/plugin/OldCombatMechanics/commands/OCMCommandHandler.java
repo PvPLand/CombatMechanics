@@ -141,16 +141,6 @@ public class OCMCommandHandler implements CommandExecutor {
         ModuleLoader.getModules().forEach(module -> module.onModesetChange(playerCopy));
     }
 
-    /*
-    private void test(OCMMain plugin, CommandSender sender) {
-        final Location location = sender instanceof Player ?
-                ((Player) sender).getLocation() :
-                sender.getServer().getWorlds().get(0).getSpawnLocation();
-
-        new InGameTester(plugin).performTests(sender, location);
-    }
-     */
-
     public boolean onCommand(@NotNull CommandSender sender, @NotNull Command cmd, @NotNull String label, String[] args) {
         if (args.length < 1) {
             help(plugin, sender);
