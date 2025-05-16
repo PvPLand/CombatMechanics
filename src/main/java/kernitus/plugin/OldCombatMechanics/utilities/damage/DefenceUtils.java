@@ -83,7 +83,7 @@ public class DefenceUtils {
                                                        EntityDamageEvent.DamageCause damageCause,
                                                        boolean randomness) {
 
-        final double armourPoints = damagedEntity.getAttribute(Attribute.GENERIC_ARMOR).getValue();
+        final double armourPoints = damagedEntity.getAttribute(Attribute.ARMOR).getValue();
         // Make sure we don't go over 100% protection
         final double armourReductionFactor = Math.min(1.0, armourPoints * REDUCTION_PER_ARMOUR_POINT);
 
@@ -155,7 +155,7 @@ public class DefenceUtils {
             final ItemStack itemStack = armourContents[i];
             if (itemStack == null) continue;
             final EquipmentSlot slot = new EquipmentSlot[]{EquipmentSlot.FEET, EquipmentSlot.LEGS, EquipmentSlot.CHEST, EquipmentSlot.HEAD}[i];
-            armourPoints += getAttributeModifierSum(itemStack.getType().getDefaultAttributeModifiers(slot).get(Attribute.GENERIC_ARMOR));
+            armourPoints += getAttributeModifierSum(itemStack.getType().getDefaultAttributeModifiers(slot).get(Attribute.ARMOR));
         }
 
         final double reductionFactor = armourPoints * REDUCTION_PER_ARMOUR_POINT;

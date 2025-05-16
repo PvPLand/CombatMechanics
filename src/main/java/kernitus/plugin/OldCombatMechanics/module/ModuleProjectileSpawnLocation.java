@@ -6,7 +6,6 @@
 package kernitus.plugin.OldCombatMechanics.module;
 
 import kernitus.plugin.OldCombatMechanics.OCMMain;
-import kernitus.plugin.OldCombatMechanics.utilities.MathHelper;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
 import org.bukkit.entity.Projectile;
@@ -25,19 +24,21 @@ public class ModuleProjectileSpawnLocation extends OCMModule {
     public void onProjectileLaunch(ProjectileLaunchEvent event) {
         ProjectileSource shooter = event.getEntity().getShooter();
         if (shooter instanceof Player player) {
-            if (!isEnabled(player)) return;
-            Location location = player.getEyeLocation();
+            if (!isEnabled(player)) {
+                return;
+            }
+            Location location = player.getEyeLocation().clone();
             location.subtract(
-                    MathHelper.cos(location.getYaw() / 180.0F * 3.1415927F) * 0.16F,
+                    Math.cos(location.getYaw() / 180.0F * 3.1415927F) * 0.16F,
                     0.10000000149011612D,
-                    MathHelper.sin(location.getYaw() / 180.0F * 3.1415927F) * 0.16F
+                    Math.sin(location.getYaw() / 180.0F * 3.1415927F) * 0.16F
             );
 
             Projectile projectile = event.getEntity();
             Vector velocity = projectile.getVelocity();
+            location.setDirection(projectile.getLocation().getDirection());
             projectile.teleport(location);
             projectile.setVelocity(velocity);
         }
     }
-
 }

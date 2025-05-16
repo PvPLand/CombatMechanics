@@ -102,7 +102,7 @@ public class ModulePlayerKnockback extends OCMModule {
             if(!isEnabled(damagee)) return;
         }
 
-        final AttributeInstance attribute = damagee.getAttribute(Attribute.GENERIC_KNOCKBACK_RESISTANCE);
+        final AttributeInstance attribute = damagee.getAttribute(Attribute.KNOCKBACK_RESISTANCE);
         attribute.getModifiers().forEach(attribute::removeModifier);
     }
 
@@ -171,7 +171,7 @@ public class ModulePlayerKnockback extends OCMModule {
 
         if (netheriteKnockbackResistance) {
             // Allow netherite to affect the horizontal knockback. Each piece of armour yields 10% resistance
-            final double resistance = 1 - victim.getAttribute(Attribute.GENERIC_KNOCKBACK_RESISTANCE).getValue();
+            final double resistance = 1 - victim.getAttribute(Attribute.KNOCKBACK_RESISTANCE).getValue();
             playerVelocity.multiply(new Vector(resistance, 1, resistance));
         }
 

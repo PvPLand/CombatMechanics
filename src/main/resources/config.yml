@@ -558,12 +558,12 @@ disable-attack-sounds:
   enabled: false
   # The sounds that will be blocked by this module
   blocked-sound-names:
-    - "ENTITY_PLAYER_ATTACK_STRONG"
-    - "ENTITY_PLAYER_ATTACK_SWEEP"
-    - "ENTITY_PLAYER_ATTACK_NODAMAGE"
-    - "ENTITY_PLAYER_ATTACK_KNOCKBACK"
-    - "ENTITY_PLAYER_ATTACK_CRIT"
-    - "ENTITY_PLAYER_ATTACK_WEAK"
+    - "ENTITY.PLAYER.ATTACK.STRONG"
+    - "ENTITY.PLAYER.ATTACK.SWEEP"
+    - "ENTITY.PLAYER.ATTACK.NODAMAGE"
+    - "ENTITY.PLAYER.ATTACK.KNOCKBACK"
+    - "ENTITY.PLAYER.ATTACK.CRIT"
+    - "ENTITY.PLAYER.ATTACK.WEAK"
 
 # ########################
 # SPECIAL SETTINGS BELOW #

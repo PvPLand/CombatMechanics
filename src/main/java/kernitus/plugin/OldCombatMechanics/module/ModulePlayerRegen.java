@@ -64,7 +64,7 @@ public class ModulePlayerRegen extends OCMModule {
             return;
         }
 
-        final double maxHealth = p.getAttribute(Attribute.GENERIC_MAX_HEALTH).getValue();
+        final double maxHealth = p.getAttribute(Attribute.MAX_HEALTH).getValue();
         final double playerHealth = p.getHealth();
 
         if (playerHealth < maxHealth) {

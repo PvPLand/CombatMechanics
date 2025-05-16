@@ -73,7 +73,7 @@ public class ModuleAttackCooldown extends OCMModule {
      * @param attackSpeed the attack speed to set it to
      */
     public void setAttackSpeed(Player player, double attackSpeed) {
-        final AttributeInstance attribute = player.getAttribute(Attribute.GENERIC_ATTACK_SPEED);
+        final AttributeInstance attribute = player.getAttribute(Attribute.ATTACK_SPEED);
         if (attribute == null) return;
 
         final double baseValue = attribute.getBaseValue();
