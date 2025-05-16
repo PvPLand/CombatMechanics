@@ -8,10 +8,11 @@ import com.github.jengelman.gradle.plugins.shadow.tasks.ShadowJar
 
 plugins {
     `java-library`
-    id("com.github.johnrengelman.shadow") version "8.1.1"
+    id("io.github.goooler.shadow") version "8.1.8"
     // For ingametesting
-    //id("io.papermc.paperweight.userdev") version "1.5.10"
     idea
+    id("io.papermc.paperweight.userdev") version "2.0.0-beta.14"
+    id("xyz.jpenilla.run-paper") version "2.3.1"
 }
 
 // Make sure javadocs are available to IDE
@@ -30,12 +31,11 @@ repositories {
     maven("https://oss.sonatype.org/content/repositories/central")
     // Placeholder API
     maven("https://repo.extendedclip.com/content/repositories/placeholderapi/")
-    // CodeMC Repo for bStats
-    maven("https://repo.codemc.org/repository/maven-public/")
     // Auth library from Minecraft
     maven("https://libraries.minecraft.net/")
     // Protocollib
     maven("https://repo.dmulloy2.net/repository/public/")
+    maven("https://repo.papermc.io/repository/maven-public/")
 }
 
 dependencies {
@@ -47,7 +47,7 @@ dependencies {
     // For BSON file serialisation
     implementation("org.mongodb:bson:5.0.1")
     // Spigot
-    compileOnly("org.spigotmc:spigot-api:1.20.6-R0.1-SNAPSHOT")
+    paperweight.paperDevBundle("1.21.4-R0.1-SNAPSHOT")
     // ProtocolLib
     compileOnly("com.comphenix.protocol:ProtocolLib:5.1.0")
 
@@ -64,12 +64,13 @@ dependencies {
 group = "kernitus.plugin.OldCombatMechanics"
 version = "2.0.4-beta"
 description = "OldCombatMechanics"
+paperweight.reobfArtifactConfiguration = io.papermc.paperweight.userdev.ReobfArtifactConfiguration.MOJANG_PRODUCTION
 
 java {
     toolchain {
         // We can build with Java 17 but still support MC >=1.9
         // This is because MC >=1.9 server can be run with higher Java versions
-        languageVersion.set(JavaLanguageVersion.of(17))
+        languageVersion.set(JavaLanguageVersion.of(21))
     }
 }
 
@@ -96,9 +97,6 @@ tasks.withType<JavaCompile> {
 tasks.named<ShadowJar>("shadowJar") {
     dependsOn("jar")
     archiveFileName.set("${project.name}.jar")
-    dependencies {
-        relocate("org.bstats", "kernitus.plugin.OldCombatMechanics.lib.bstats")
-    }
 }
 
 // For ingametesting
