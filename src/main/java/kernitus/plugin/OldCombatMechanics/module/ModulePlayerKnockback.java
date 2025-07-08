@@ -29,7 +29,7 @@ import org.bukkit.util.Vector;
 
 import java.util.Map;
 import java.util.UUID;
-import java.util.WeakHashMap;
+import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * Reverts knockback formula to 1.8.
@@ -49,7 +49,7 @@ public class ModulePlayerKnockback extends OCMModule {
     private double maximumRangeReduction;
     private boolean netheriteKnockbackResistance;
 
-    private final Map<UUID, Vector> playerKnockbackHashMap = new WeakHashMap<>();
+    private final Map<UUID, Vector> playerKnockbackHashMap = new ConcurrentHashMap<>();
 
     public ModulePlayerKnockback(OCMMain plugin) {
         super(plugin, "old-player-knockback");
