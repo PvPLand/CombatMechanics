@@ -68,11 +68,13 @@ public class ModuleAttackSounds extends OCMModule {
             try {
                 WrapperPlayServerSoundEffect wrapper = new WrapperPlayServerSoundEffect(event);
                 Sound sound = wrapper.getSound();
-                String soundName = sound.getSoundId().toString(); // Works for both string and namespaced key
+                String soundName = sound.getSoundId().getKey(); // Works for both string and namespaced key
 
                 if (blockedSounds.contains(soundName)) {
                     event.setCancelled(true);
                     debug("Blocked sound " + soundName, event.getPlayer());
+                } else {
+                    debug("Allowed sound " + soundName, event.getPlayer());
                 }
             } catch (Exception | ExceptionInInitializerError e) {
                 disabledDueToError = true;
