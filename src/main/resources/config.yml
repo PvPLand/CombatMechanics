@@ -234,7 +234,8 @@ old-player-knockback:
   # Increase to make clicking less important, decrease to make clicking more important
   knockback-extra-vertical: 0.1
   # How much should we divide the player's current motion by? Higher values mean their current motion matters less
-  knockback-friction: 2.0
+  knockback-friction-vertical: 2.0
+  knockback-friction-horizontal: 2.0
   # At what distance between attacker and victim should we start modifying knockback
   start-range: 0
   # How much should we multiply the knockback by when the distance is greater than start-range

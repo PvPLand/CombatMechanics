@@ -5,8 +5,8 @@
  */
 package kernitus.plugin.OldCombatMechanics;
 
-import com.comphenix.protocol.ProtocolLibrary;
-import com.comphenix.protocol.ProtocolManager;
+import com.github.retrooper.packetevents.PacketEvents;
+import com.github.retrooper.packetevents.PacketEventsAPI;
 import kernitus.plugin.OldCombatMechanics.commands.OCMCommandCompleter;
 import kernitus.plugin.OldCombatMechanics.commands.OCMCommandHandler;
 import kernitus.plugin.OldCombatMechanics.hooks.PlaceholderAPIHook;
@@ -20,6 +20,7 @@ import kernitus.plugin.OldCombatMechanics.utilities.damage.EntityDamageByEntityL
 import kernitus.plugin.OldCombatMechanics.utilities.reflection.Reflector;
 import kernitus.plugin.OldCombatMechanics.utilities.storage.ModesetListener;
 import kernitus.plugin.OldCombatMechanics.utilities.storage.PlayerStorage;
+import net.kyori.adventure.text.Component;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.HumanEntity;
 import org.bukkit.event.EventException;
@@ -45,7 +46,7 @@ public class OCMMain extends JavaPlugin {
     private final List<Runnable> disableListeners = new ArrayList<>();
     private final List<Runnable> enableListeners = new ArrayList<>();
     private final List<Hook> hooks = new ArrayList<>();
-    private ProtocolManager protocolManager;
+    private PacketEventsAPI<?> protocolManager;
 
     public OCMMain() {
         super();
@@ -71,11 +72,11 @@ public class OCMMain extends JavaPlugin {
         Messenger.initialise(this);
 
         try {
-            if (getServer().getPluginManager().getPlugin("ProtocolLib") != null &&
-                    getServer().getPluginManager().getPlugin("ProtocolLib").isEnabled())
-                protocolManager = ProtocolLibrary.getProtocolManager();
+            if (getServer().getPluginManager().getPlugin("packetevents") != null &&
+                    getServer().getPluginManager().getPlugin("packetevents").isEnabled())
+                protocolManager = PacketEvents.getAPI();
         } catch (Exception e) {
-            Messenger.warn("No ProtocolLib detected, some features might be disabled");
+            Messenger.warn("No PacketEvents detected, some features might be disabled");
         }
 
         // Register all the modules
@@ -102,7 +103,7 @@ public class OCMMain extends JavaPlugin {
                 .collect(Collectors.toList());
 
         Bukkit.getOnlinePlayers().forEach(player -> {
-            final PlayerJoinEvent event = new PlayerJoinEvent(player, "");
+            final PlayerJoinEvent event = new PlayerJoinEvent(player, Component.empty());
 
             // Trick all the modules into thinking the player just joined in case the plugin was loaded with Plugman.
             // This way attack speeds, item modifications, etc. will be applied immediately instead of after a re-log.
@@ -138,7 +139,7 @@ public class OCMMain extends JavaPlugin {
         // Trick all the modules into thinking the player just quit in case the plugin was unloaded with Plugman.
         // This way attack speeds, item modifications, etc. will be restored immediately instead of after a disconnect.
         Bukkit.getOnlinePlayers().forEach(player -> {
-            final PlayerQuitEvent event = new PlayerQuitEvent(player, "");
+            final PlayerQuitEvent event = new PlayerQuitEvent(player, Component.empty(), PlayerQuitEvent.QuitReason.DISCONNECTED);
 
             quitListeners.forEach(registeredListener -> {
                 try {
@@ -272,7 +273,7 @@ public class OCMMain extends JavaPlugin {
         return INSTANCE.getDescription().getVersion();
     }
 
-    public ProtocolManager getProtocolManager() {
+    public PacketEventsAPI<?> getProtocolManager() {
         return protocolManager;
     }
 }

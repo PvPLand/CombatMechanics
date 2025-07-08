@@ -5,14 +5,17 @@
  */
 package kernitus.plugin.OldCombatMechanics.module;
 
-import com.comphenix.protocol.PacketType;
-import com.comphenix.protocol.ProtocolManager;
-import com.comphenix.protocol.events.PacketAdapter;
-import com.comphenix.protocol.events.PacketContainer;
-import com.comphenix.protocol.events.PacketEvent;
+import com.github.retrooper.packetevents.PacketEventsAPI;
+import com.github.retrooper.packetevents.event.PacketListenerAbstract;
+import com.github.retrooper.packetevents.event.PacketSendEvent;
+import com.github.retrooper.packetevents.event.SimplePacketListenerAbstract;
+import com.github.retrooper.packetevents.event.simple.PacketPlaySendEvent;
+import com.github.retrooper.packetevents.protocol.packettype.PacketType;
+import com.github.retrooper.packetevents.protocol.sound.Sound;
+import com.github.retrooper.packetevents.wrapper.play.server.WrapperPlayServerSoundEffect;
 import kernitus.plugin.OldCombatMechanics.OCMMain;
 import kernitus.plugin.OldCombatMechanics.utilities.Messenger;
-import org.bukkit.Sound;
+import org.bukkit.entity.HumanEntity;
 import org.bukkit.plugin.Plugin;
 
 import java.util.Collection;
@@ -24,8 +27,8 @@ import java.util.Set;
  */
 public class ModuleAttackSounds extends OCMModule {
 
-    private final ProtocolManager protocolManager = plugin.getProtocolManager();
-    private final SoundListener soundListener = new SoundListener(plugin);
+    private final PacketEventsAPI<?> protocolManager = plugin.getProtocolManager();
+    private final SoundListener soundListener = new SoundListener();
     private final Set<String> blockedSounds = new HashSet<>(getBlockedSounds());
 
     public ModuleAttackSounds(OCMMain plugin) {
@@ -40,9 +43,9 @@ public class ModuleAttackSounds extends OCMModule {
         blockedSounds.addAll(getBlockedSounds());
 
         if (isEnabled())
-            protocolManager.addPacketListener(soundListener);
+            protocolManager.getEventManager().registerListener(soundListener);
         else
-            protocolManager.removePacketListener(soundListener);
+            protocolManager.getEventManager().unregisterListener(soundListener);
     }
 
     private Collection<String> getBlockedSounds() {
@@ -52,31 +55,24 @@ public class ModuleAttackSounds extends OCMModule {
     /**
      * Disables attack sounds.
      */
-    private class SoundListener extends PacketAdapter {
+    private class SoundListener extends SimplePacketListenerAbstract {
         private boolean disabledDueToError;
 
-        public SoundListener(Plugin plugin) {
-            super(plugin, PacketType.Play.Server.NAMED_SOUND_EFFECT);
-        }
-
         @Override
-        public void onPacketSending(PacketEvent packetEvent) {
-            if (disabledDueToError || !isEnabled(packetEvent.getPlayer())) return;
+        public void onPacketPlaySend(PacketPlaySendEvent event) {
+            if (disabledDueToError || !isEnabled((HumanEntity) event.getPlayer())) return;
+            if (event.getPacketType() != PacketType.Play.Server.SOUND_EFFECT) {
+                return;
+            }
 
             try {
-                final PacketContainer packetContainer = packetEvent.getPacket();
-                final Sound sound = packetContainer.getSoundEffects().read(0);
-                
-                //fix NullpointerException when sending a custom sound 
-                if (sound == null) {
-                    return;
-                }
-                
-                final String soundName = sound.toString(); // Works for both string and namespaced key
+                WrapperPlayServerSoundEffect wrapper = new WrapperPlayServerSoundEffect(event);
+                Sound sound = wrapper.getSound();
+                String soundName = sound.getSoundId().toString(); // Works for both string and namespaced key
 
                 if (blockedSounds.contains(soundName)) {
-                    packetEvent.setCancelled(true);
-                    debug("Blocked sound " + soundName, packetEvent.getPlayer());
+                    event.setCancelled(true);
+                    debug("Blocked sound " + soundName, event.getPlayer());
                 }
             } catch (Exception | ExceptionInInitializerError e) {
                 disabledDueToError = true;

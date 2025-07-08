@@ -33,8 +33,9 @@ repositories {
     maven("https://repo.extendedclip.com/content/repositories/placeholderapi/")
     // Auth library from Minecraft
     maven("https://libraries.minecraft.net/")
-    // Protocollib
-    maven("https://repo.dmulloy2.net/repository/public/")
+    // packetevents
+    maven { url = uri("https://repo.codemc.io/repository/maven-releases/") }
+    maven { url = uri("https://repo.codemc.io/repository/maven-snapshots/") }
     maven("https://repo.papermc.io/repository/maven-public/")
 }
 
@@ -48,8 +49,8 @@ dependencies {
     implementation("org.mongodb:bson:5.0.1")
     // Spigot
     paperweight.paperDevBundle("1.21.4-R0.1-SNAPSHOT")
-    // ProtocolLib
-    compileOnly("com.comphenix.protocol:ProtocolLib:5.1.0")
+    // PacketEvents
+    compileOnly("com.github.retrooper:packetevents-spigot:2.9.0-SNAPSHOT")
 
      //For ingametesting
     // Mojang mappings for NMS
