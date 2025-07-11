@@ -6,32 +6,24 @@
 package kernitus.plugin.OldCombatMechanics.module;
 
 import kernitus.plugin.OldCombatMechanics.OCMMain;
-import kernitus.plugin.OldCombatMechanics.utilities.MathHelper;
-import org.bukkit.Location;
+import net.minecraft.world.level.Level;
+import org.bukkit.craftbukkit.entity.CraftPlayer;
 import org.bukkit.entity.Player;
-import org.bukkit.entity.Projectile;
-import org.bukkit.event.EventHandler;
-import org.bukkit.event.entity.ProjectileLaunchEvent;
-import org.bukkit.projectiles.ProjectileSource;
-import org.bukkit.util.Vector;
 
 public class ModuleProjectileRelativeVelocity extends OCMModule {
 
     public ModuleProjectileRelativeVelocity(OCMMain plugin) {
-        super(plugin, "projectile-relative-velocity-transfer");
+        super(plugin, "disable-relative-projectile-velocity");
     }
 
-    @EventHandler
-    public void onProjectileLaunch(ProjectileLaunchEvent event) {
-        ProjectileSource shooter = event.getEntity().getShooter();
-        if (shooter instanceof Player player) {
-            if (!isEnabled(player)) return;
-
-            Projectile projectile = event.getEntity();
-            Vector velocity = projectile.getVelocity();
-            Vector shooterVelocity = player.getVelocity();
-            Vector relativeVelocity = new Vector(shooterVelocity.getX(), player.isOnGround() ? 0.0D : shooterVelocity.getY(), shooterVelocity.getZ());
-            projectile.setVelocity(velocity.add(relativeVelocity));
+    @Override
+    public void onModesetChange(Player player) {
+        if (!isEnabled(player)) {
+            return;
         }
+
+        Level level = ((CraftPlayer) player).getHandle().level();
+        level.paperConfig().misc.disableRelativeProjectileVelocity = true;
+        System.out.println("Disabled relative projectile velocity for " + player.getName() + " in " + level.dimension().location());
     }
 }

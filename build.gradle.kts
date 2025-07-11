@@ -11,7 +11,7 @@ plugins {
     id("io.github.goooler.shadow") version "8.1.8"
     // For ingametesting
     idea
-    id("io.papermc.paperweight.userdev") version "2.0.0-beta.14"
+    id("io.papermc.paperweight.userdev") version "2.0.0-beta.17"
     id("xyz.jpenilla.run-paper") version "2.3.1"
 }
 
@@ -48,7 +48,7 @@ dependencies {
     // For BSON file serialisation
     implementation("org.mongodb:bson:5.0.1")
     // Spigot
-    paperweight.paperDevBundle("1.21.4-R0.1-SNAPSHOT")
+    paperweight.paperDevBundle("1.21.7-R0.1-SNAPSHOT")
     // PacketEvents
     compileOnly("com.github.retrooper:packetevents-spigot:2.9.0-SNAPSHOT")
 

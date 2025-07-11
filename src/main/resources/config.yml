@@ -32,6 +32,7 @@ modesets:
     - "old-armour-strength"
     - "old-potion-effects"
     - "old-critical-hits"
+    - "disable-relative-projectile-velocity"
   new: [ ]
 
 worlds:
