@@ -24,6 +24,5 @@ public class ModuleProjectileRelativeVelocity extends OCMModule {
 
         Level level = ((CraftPlayer) player).getHandle().level();
         level.paperConfig().misc.disableRelativeProjectileVelocity = true;
-        System.out.println("Disabled relative projectile velocity for " + player.getName() + " in " + level.dimension().location());
     }
 }
