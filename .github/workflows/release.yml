@@ -1,0 +1,52 @@
+---
+name: "release"
+
+on:
+  push:
+
+jobs:
+  pre-release:
+    runs-on: "ubuntu-latest"
+
+    steps:
+      - name: Checkout project
+        uses: actions/checkout@v4
+
+      - name: Setup Java
+        uses: actions/setup-java@v4
+        with:
+          java-version: '21'
+          distribution: 'adopt'
+
+      - name: Setup Gradle
+        uses: gradle/actions/setup-gradle@v3
+
+      - name: Grant execute permission for Gradle
+        run: chmod +x ./gradlew
+
+      - name: Build Fat Jar
+        run: ./gradlew shadowJar
+        env:
+          GITHUB_ACTOR: ${{ secrets.PVPLAND_ACTOR }}
+          GITHUB_TOKEN: ${{ secrets.PVPLAND_TOKEN }}
+
+      - name: Create Release (master)
+        if: github.ref == 'refs/heads/master'
+        uses: "marvinpinto/action-automatic-releases@latest"
+        with:
+          repo_token: "${{ secrets.GITHUB_TOKEN }}"
+          automatic_release_tag: "latest-prod"
+          prerelease: false
+          title: "Production Build"
+          files: |
+            build/libs/OldCombatMechanics.jar
+      - name: Create Release (development)
+        if: github.ref != 'refs/heads/master'
+        uses: "marvinpinto/action-automatic-releases@latest"
+        with:
+          repo_token: "${{ secrets.GITHUB_TOKEN }}"
+          automatic_release_tag: "latest-dev"
+          prerelease: true
+          title: "Development Build"
+          files: |
+            build/libs/OldCombatMechanics.jar
