@@ -118,7 +118,6 @@ public class ModulePlayerKnockback extends OCMModule {
         final Player victim = (Player) damagee;
 
         if (event.getCause() != EntityDamageEvent.DamageCause.ENTITY_ATTACK) return;
-        if (event.getDamage(EntityDamageEvent.DamageModifier.BLOCKING) > 0) return;
 
         if(attacker instanceof HumanEntity){
             if (!isEnabled(attacker)) return;

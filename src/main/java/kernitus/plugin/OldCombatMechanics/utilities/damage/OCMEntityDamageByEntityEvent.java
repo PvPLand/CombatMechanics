@@ -9,6 +9,7 @@ import kernitus.plugin.OldCombatMechanics.utilities.potions.PotionEffectTypeComp
 import kernitus.plugin.OldCombatMechanics.utilities.potions.PotionEffects;
 import kernitus.plugin.OldCombatMechanics.versions.enchantments.EnchantmentCompat;
 import org.bukkit.Material;
+import org.bukkit.craftbukkit.entity.CraftLivingEntity;
 import org.bukkit.entity.*;
 import org.bukkit.event.Cancellable;
 import org.bukkit.event.Event;
@@ -134,7 +135,9 @@ public class OCMEntityDamageByEntityEvent extends Event implements Cancellable {
         debug(livingDamager, "No ench damage: " + tempDamage);
 
         // Check if it's a critical hit
-        if (livingDamager instanceof Player && DamageUtils.isCriticalHit1_8((HumanEntity) livingDamager)){
+        CraftLivingEntity craftLivingDamager = (CraftLivingEntity) livingDamager;
+        boolean critsEnabled = !craftLivingDamager.getHandle().level().paperConfig().entities.behavior.disablePlayerCrits;
+        if (critsEnabled && livingDamager instanceof Player && DamageUtils.isCriticalHit1_8((HumanEntity) livingDamager)){
             was1_8Crit = true;
             debug(livingDamager, "1.8 Critical hit detected");
             // In 1.9 a crit also requires the player not to be sprinting
