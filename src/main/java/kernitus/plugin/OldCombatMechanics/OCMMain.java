@@ -213,13 +213,14 @@ public class OCMMain extends JavaPlugin {
 
         ModuleLoader.addModule(new ModuleProjectileRelativeVelocity(this));
         ModuleLoader.addModule(new ModuleProjectileSpawnLocation(this));
+        ModuleLoader.addModule(new ModuleDisablePlayerCrits(this));
 
-        // These modules require ProtocolLib
+        // These modules require PacketEvents
         if (protocolManager != null) {
             ModuleLoader.addModule(new ModuleAttackSounds(this));
             ModuleLoader.addModule(new ModuleSwordSweepParticles(this));
         } else {
-            Messenger.warn("No ProtocolLib detected, attack-sounds and sword-sweep-particles modules will be disabled");
+            Messenger.warn("No PacketEvents detected, attack-sounds and sword-sweep-particles modules will be disabled");
         }
     }
 
