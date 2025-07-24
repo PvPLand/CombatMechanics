@@ -48,6 +48,10 @@ public class ModuleOldArmourStrength extends OCMModule {
         // 1.8 NMS: Damage = (damage after blocking * (25 - total armour strength)) / 25
         if (!(e.getEntity() instanceof LivingEntity)) return;
 
+        if (!this.isEnabled(e.getEntity())) {
+            return;
+        }
+
         final LivingEntity damagedEntity = (LivingEntity) e.getEntity();
 
         // If there was an attacker, and he does not have this module enabled, return
