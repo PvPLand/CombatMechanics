@@ -46,7 +46,7 @@ public class ModuleSwordSweepParticles extends OCMModule {
 
         @Override
         public void onPacketPlaySend(PacketPlaySendEvent event) {
-            if (disabledDueToError || !isEnabled((HumanEntity) event.getPlayer())) return;
+            if (disabledDueToError || event.getPlayer() == null || !isEnabled((HumanEntity) event.getPlayer())) return;
             if (event.getPacketType() != PacketType.Play.Server.PARTICLE) return;
             try {
                 WrapperPlayServerParticle wrapper = new WrapperPlayServerParticle(event);

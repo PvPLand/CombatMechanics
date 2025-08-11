@@ -60,7 +60,7 @@ public class ModuleAttackSounds extends OCMModule {
 
         @Override
         public void onPacketPlaySend(PacketPlaySendEvent event) {
-            if (disabledDueToError || !isEnabled((HumanEntity) event.getPlayer())) return;
+            if (disabledDueToError || event.getPlayer() == null || !isEnabled((HumanEntity) event.getPlayer())) return;
             if (event.getPacketType() != PacketType.Play.Server.SOUND_EFFECT) {
                 return;
             }
