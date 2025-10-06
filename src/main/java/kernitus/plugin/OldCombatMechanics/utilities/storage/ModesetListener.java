@@ -6,6 +6,7 @@
 
 package kernitus.plugin.OldCombatMechanics.utilities.storage;
 
+import com.destroystokyo.paper.event.entity.EntityRemoveFromWorldEvent;
 import kernitus.plugin.OldCombatMechanics.OCMMain;
 import kernitus.plugin.OldCombatMechanics.module.OCMModule;
 import kernitus.plugin.OldCombatMechanics.utilities.Config;
@@ -15,6 +16,7 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.player.PlayerChangedWorldEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
+import org.bukkit.event.player.PlayerQuitEvent;
 
 import java.util.Set;
 import java.util.UUID;
@@ -81,5 +83,15 @@ public class ModesetListener extends OCMModule {
     public void onPlayerJoin(PlayerJoinEvent event) {
         final Player player = event.getPlayer();
         updateModeset(player, player.getWorld().getUID(), null);
+    }
+
+    @EventHandler()
+    public void onPlayerQuit(PlayerQuitEvent event) {
+        PlayerStorage.clearPlayerData(event.getPlayer().getUniqueId());
+    }
+
+    @EventHandler
+    public void onEntityRemove(EntityRemoveFromWorldEvent event) {
+        PlayerStorage.clearPlayerData(event.getEntity().getUniqueId());
     }
 }

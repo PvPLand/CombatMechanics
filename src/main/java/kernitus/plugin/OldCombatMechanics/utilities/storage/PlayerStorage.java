@@ -60,6 +60,10 @@ public class PlayerStorage {
         }
     }
 
+    public static void clearPlayerData(UUID uuid) {
+        dataMap.remove(uuid);
+    }
+
     public static void setPlayerData(UUID uuid, PlayerData playerData) {
         dataMap.put(uuid, playerData);
     }
