@@ -7,11 +7,13 @@ package kernitus.plugin.OldCombatMechanics.module;
 
 import kernitus.plugin.OldCombatMechanics.OCMMain;
 import kernitus.plugin.OldCombatMechanics.utilities.reflection.Reflector;
+import net.minecraft.world.level.Level;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.attribute.Attribute;
 import org.bukkit.attribute.AttributeInstance;
+import org.bukkit.craftbukkit.entity.CraftPlayer;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.HumanEntity;
@@ -69,6 +71,12 @@ public class ModulePlayerKnockback extends OCMModule {
         startRange = module().getDouble("start-range", -1);
         rangeFactor = module().getDouble("range-factor", 1.0);
         maximumRangeReduction = module().getDouble("maximum-range-reduction", 0.4);
+    }
+
+    @Override
+    public void onModesetChange(Player player) {
+        Level level = ((CraftPlayer) player).getHandle().level();
+        level.paperConfig().misc.disableSprintInterruptionOnAttack = !isEnabled(player);
     }
 
     @EventHandler

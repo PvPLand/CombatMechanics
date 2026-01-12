@@ -73,6 +73,9 @@ attack-frequency:
   playerDelay: 18
   mobDelay: 16
 
+disable-relative-projectile-velocity:
+  enabled: true
+
 old-tool-damage:
   # This is to set the tool damage as in pre-1.9
   # IMPORTANT: Also enable disable-sword-sweep module or sweeps will have the damage value of the weapon in hand
