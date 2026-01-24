@@ -156,7 +156,7 @@ public class OCMMain extends JavaPlugin {
 
     private void registerModules() {
         // Update Checker (also a module, so we can use the dynamic registering/unregistering)
-        ModuleLoader.addModule(new ModuleUpdateChecker(this));
+//        ModuleLoader.addModule(new ModuleUpdateChecker(this));
 
         // Modeset listener, for when player joins or changes world
         ModuleLoader.addModule(new ModesetListener(this));
@@ -166,15 +166,15 @@ public class OCMMain extends JavaPlugin {
 
         // If below 1.16, we need to keep track of player attack cooldown ourselves
         if (Reflector.getMethod(HumanEntity.class, "getAttackCooldown", 0) == null) {
-            ModuleLoader.addModule(new AttackCooldownTracker(this));
+//            ModuleLoader.addModule(new AttackCooldownTracker(this));
         }
 
         //Listeners registered later with same priority are called later
 
         //These four listen to OCMEntityDamageByEntityEvent:
-        ModuleLoader.addModule(new ModuleOldToolDamage(this));
+//        ModuleLoader.addModule(new ModuleOldToolDamage(this));
         ModuleLoader.addModule(new ModuleSwordSweep(this));
-        ModuleLoader.addModule(new ModuleOldPotionEffects(this));
+//        ModuleLoader.addModule(new ModuleOldPotionEffects(this));
         ModuleLoader.addModule(new ModuleOldCriticalHits(this));
 
         //Next block are all on LOWEST priority, so will be called in the following order:
@@ -182,32 +182,32 @@ public class OCMMain extends JavaPlugin {
         // Defence order: overdamage -> blocking -> armour -> resistance -> armour enchs -> absorption
         //EntityDamageByEntityListener calls OCMEntityDamageByEntityEvent, see modules above
         // For everything from base to overdamage
-        ModuleLoader.addModule(new EntityDamageByEntityListener(this));
+//        ModuleLoader.addModule(new EntityDamageByEntityListener(this));
         // ModuleSwordBlocking to calculate blocking
-        ModuleLoader.addModule(new ModuleShieldDamageReduction(this));
+//        ModuleLoader.addModule(new ModuleShieldDamageReduction(this));
         // OldArmourStrength for armour -> resistance -> armour enchs -> absorption
-        ModuleLoader.addModule(new ModuleOldArmourStrength(this));
+//        ModuleLoader.addModule(new ModuleOldArmourStrength(this));
 
         ModuleLoader.addModule(new ModuleSwordBlocking(this));
-        ModuleLoader.addModule(new ModuleOldArmourDurability(this));
+//        ModuleLoader.addModule(new ModuleOldArmourDurability(this));
 
         ModuleLoader.addModule(new ModuleGoldenApple(this));
         ModuleLoader.addModule(new ModuleFishingKnockback(this));
         ModuleLoader.addModule(new ModulePlayerKnockback(this));
         ModuleLoader.addModule(new ModulePlayerRegen(this));
 
-        ModuleLoader.addModule(new ModuleDisableCrafting(this));
+//        ModuleLoader.addModule(new ModuleDisableCrafting(this));
         ModuleLoader.addModule(new ModuleDisableOffHand(this));
-        ModuleLoader.addModule(new ModuleOldBrewingStand(this));
-        ModuleLoader.addModule(new ModuleDisableElytra(this));
-        ModuleLoader.addModule(new ModuleDisableProjectileRandomness(this));
-        ModuleLoader.addModule(new ModuleDisableBowBoost(this));
-        ModuleLoader.addModule(new ModuleProjectileKnockback(this));
-        ModuleLoader.addModule(new ModuleNoLapisEnchantments(this));
+//        ModuleLoader.addModule(new ModuleOldBrewingStand(this));
+//        ModuleLoader.addModule(new ModuleDisableElytra(this));
+//        ModuleLoader.addModule(new ModuleDisableProjectileRandomness(this));
+//        ModuleLoader.addModule(new ModuleDisableBowBoost(this));
+//        ModuleLoader.addModule(new ModuleProjectileKnockback(this));
+//        ModuleLoader.addModule(new ModuleNoLapisEnchantments(this));
         ModuleLoader.addModule(new ModuleDisableEnderpearlCooldown(this));
-        ModuleLoader.addModule(new ModuleChorusFruit(this));
+//        ModuleLoader.addModule(new ModuleChorusFruit(this));
 
-        ModuleLoader.addModule(new ModuleOldBurnDelay(this));
+//        ModuleLoader.addModule(new ModuleOldBurnDelay(this));
         ModuleLoader.addModule(new ModuleAttackFrequency(this));
         ModuleLoader.addModule(new ModuleFishingRodVelocity(this));
 

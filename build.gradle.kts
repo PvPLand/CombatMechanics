@@ -63,7 +63,7 @@ dependencies {
 }
 
 group = "kernitus.plugin.OldCombatMechanics"
-version = "2.0.6-beta"
+version = "2.0.7-beta"
 description = "OldCombatMechanics"
 paperweight.reobfArtifactConfiguration = io.papermc.paperweight.userdev.ReobfArtifactConfiguration.MOJANG_PRODUCTION
 
