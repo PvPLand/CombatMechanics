@@ -202,7 +202,7 @@ public class OCMMain extends JavaPlugin {
 //        ModuleLoader.addModule(new ModuleDisableElytra(this));
 //        ModuleLoader.addModule(new ModuleDisableProjectileRandomness(this));
 //        ModuleLoader.addModule(new ModuleDisableBowBoost(this));
-//        ModuleLoader.addModule(new ModuleProjectileKnockback(this));
+        ModuleLoader.addModule(new ModuleProjectileKnockback(this));
 //        ModuleLoader.addModule(new ModuleNoLapisEnchantments(this));
         ModuleLoader.addModule(new ModuleDisableEnderpearlCooldown(this));
 //        ModuleLoader.addModule(new ModuleChorusFruit(this));
