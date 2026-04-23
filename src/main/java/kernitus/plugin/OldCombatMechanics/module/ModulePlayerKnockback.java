@@ -76,7 +76,7 @@ public class ModulePlayerKnockback extends OCMModule {
     @Override
     public void onModesetChange(Player player) {
         Level level = ((CraftPlayer) player).getHandle().level();
-        level.paperConfig().misc.disableSprintInterruptionOnAttack = !isEnabled(player);
+        level.paperConfig().misc.disableSprintInterruptionOnAttack = isEnabled(player);
     }
 
     @EventHandler
