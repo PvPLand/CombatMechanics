@@ -7,6 +7,7 @@ package kernitus.plugin.OldCombatMechanics.module;
 
 import kernitus.plugin.OldCombatMechanics.OCMMain;
 import net.minecraft.world.level.Level;
+import org.bukkit.Bukkit;
 import org.bukkit.craftbukkit.entity.CraftPlayer;
 import org.bukkit.entity.Player;
 
@@ -18,11 +19,15 @@ public class ModuleDisablePlayerCrits extends OCMModule {
 
     @Override
     public void onModesetChange(Player player) {
-        if (!isEnabled(player)) {
-            return;
-        }
-
         Level level = ((CraftPlayer) player).getHandle().level();
-        level.paperConfig().entities.behavior.disablePlayerCrits = true;
+
+        // Paper stores this setting on the Level, not on the player. Recompute it
+        // from all players in the world so switching one player to the new
+        // modeset cannot leave critical hits disabled for everyone indefinitely.
+        boolean disablePlayerCrits = Bukkit.getOnlinePlayers().stream()
+                .filter(other -> other.getWorld().equals(player.getWorld()))
+                .anyMatch(this::isEnabled);
+
+        level.paperConfig().entities.behavior.disablePlayerCrits = disablePlayerCrits;
     }
 }
